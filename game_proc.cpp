@@ -137,7 +137,10 @@ int get_var(string restart, string exit, bool& game, const int LEN, int* pos, bo
 
 
 // изменения параметров объекта в связи с перемещением
-void processed_var(int* pos, int var) {
+void processed_var(int* pos, int var, bool& game) {
+    if (var == -1 || !game)
+        return;
+
     if (var != 0) {
         if (pos[var] == 0) {
             pos[var]++;
@@ -161,6 +164,9 @@ void processed_var(int* pos, int var) {
 // проверка результата перемещения и вывод соответствующей реакции на условия
 void get_result(int* pos, string* name, const int LEN, int &var, bool& game, string restart, string exit) {
     bool result = true;
+
+    if (var == -1 || !game)
+        return;
 
     for (int i = 0; i < LEN; i++)
     {
@@ -187,7 +193,6 @@ void get_result(int* pos, string* name, const int LEN, int &var, bool& game, str
         cout << "Начать заного: " << restart << "\nВыйти: " << exit << endl << endl;
         var = get_var(restart, exit, game, LEN, pos, true);
     }
-    
 }
 
 
@@ -230,9 +235,10 @@ int main()
             continue;
         }
 
-        processed_var(pos, var);
+        processed_var(pos, var, game);
         get_result(pos, name, LEN, var, game, restart, exit);
     }
 
     system("pause");
+    return 0;
 }
